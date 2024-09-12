@@ -1,49 +1,35 @@
-variable "project_name" {
-  description = "A project name to be used in resources"
+variable "region" {
+  description = "The AWS region to deploy the EKS cluster"
   type        = string
-  default     = "nobel-eks"
+  default     = "us-west-2"
 }
 
-
-variable "environment" {
-  description = "Dev/Prod, will be used in AWS resources Name tag, and resources names"
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
   type        = string
-  default= "Dev"
+  default     = "my-eks-cluster"
 }
 
-variable "eks_version" {
-  description = "Kubernetes version, will be used in AWS resources names and to specify which EKS version to create/update"
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC"
   type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "private_subnet_cidrs" {
+  description = "The CIDR blocks for private subnets"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "public_subnet_cidrs" {
-
- type        = list(string)
-
- description = "Public Subnet CIDR values"
-
- default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-
+  description = "The CIDR blocks for public subnets"
+  type        = list(string)
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
- 
-
-variable "private_subnet_cidrs" {
-
- type        = list(string)
-
- description = "Private Subnet CIDR values"
-
- default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-
-}
-
-variable "azs" {
-
- type        = list(string)
-
- description = "Availability Zones"
-
- default     = ["us-west-2a", "us-west-2b", "us-west-2c"]
-
+variable "instance_types" {
+  description = "The instance types for Karpenter to use"
+  type        = list(string)
+  default     = ["m5.large", "t3.medium"]
 }

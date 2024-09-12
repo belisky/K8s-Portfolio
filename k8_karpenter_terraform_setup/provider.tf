@@ -4,6 +4,19 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.46"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.9"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.20"
+    }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = ">= 2.0.2"
+    }
+ 
   }
 }
 
@@ -13,23 +26,15 @@ provider "aws" {
   default_tags {
     tags = {
        
-      created-by = "terraform"
-      environment = var.environment
+      created-by = "terraform"       
+      "karpenter.sh/discovery" = var.cluster_name
     }
   }  
 }
 
-provider "helm" {
+ provider "helm" {
   kubernetes {
-    host                   = data.aws_eks_cluster.this.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.this.token
+    config_path = "~/.kube/config"
   }
 }
-
-provider "kubectl" {
-  host                   = data.aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.this.token
-  load_config_file       = false
-}
+ 
