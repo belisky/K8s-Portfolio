@@ -23,3 +23,7 @@ resource "aws_subnet" "private_subnets" {
      "kubernetes.io/cluster/demo" = "owned"
   }
 }
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
