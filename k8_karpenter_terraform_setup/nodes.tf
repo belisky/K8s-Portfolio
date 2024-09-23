@@ -36,10 +36,11 @@ resource "aws_eks_node_group" "private-nodes" {
     cluster_name = aws_eks_cluster.nobel-eks.name
     node_group_name = "private-nodes"
     node_role_arn = aws_iam_role.nodes.arn
-    count             = length(var.private_subnet_cidrs)
+    # count             = length(var.private_subnet_cidrs)
    
     subnet_ids = [
-        "${element(aws_subnet.private_subnets, count.index)}.id"
+        aws_subnet.private_subnets.0.id,
+        aws_subnet.private_subnets.1.id,
     ]
 
     capacity_type = "ON_DEMAND"

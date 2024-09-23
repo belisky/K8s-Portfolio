@@ -26,11 +26,13 @@ resource "aws_iam_role_policy_attachment" "eks_role-AmazonEKSClusterPolicy" {
 resource "aws_eks_cluster" "nobel-eks" {
     name= "nobel-eks"
     role_arn = aws_iam_role.eks_role.arn
-    count             = length(var.private_subnet_cidrs)
+    # count             = length(var.private_subnet_cidrs)
     vpc_config {
         subnet_ids = [
-            "${element(aws_subnet.private_subnets, count.index)}.id",
-            "${element(aws_subnet.public_subnets, count.index)}.id"
+            aws_subnet.private_subnets.0.id,
+            aws_subnet.private_subnets.1.id,
+            aws_subnet.public_subnets.0.id,
+            aws_subnet.public_subnets.1.id,
 
         ]
     }
